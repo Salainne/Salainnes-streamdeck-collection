@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Streamdeck-collection")]
+[assembly: AssemblyTitle("Salainnes Streamdeck Collection")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("FONMU-")]
-[assembly: AssemblyProduct("Streamdeck-collection")]
-[assembly: AssemblyCopyright("Copyright © FONMU- 2025")]
+[assembly: AssemblyCompany("Salainne")]
+[assembly: AssemblyProduct("Salainnes Streamdeck Collection")]
+[assembly: AssemblyCopyright("Copyright © Salainne 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -9,6 +9,7 @@
     <RootNamespace>Streamdeck_collection</RootNamespace>
     <AssemblyName>Streamdeck-collection</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <LangVersion>latest</LangVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -56,10 +57,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\ActiveIconContainer.cs" />
+    <Compile Include="Model\Attributes\StreamdeckActionAttribute.cs" />
+    <Compile Include="Model\SimpleImageSlideshowData.cs" />
+    <Compile Include="Model\ImageTestData.cs" />
     <Compile Include="Model\StreamdeckOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="PropertyInspector\Global\sdpi.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PropertyInspector\SimpleImageSlideshow\index.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RunPlugin.cs" />
+    <Compile Include="StreamdeckActions\SimpleImageSlideshow.cs" />
+    <Compile Include="StreamdeckActions\Clock.cs" />
+    <Compile Include="StreamdeckActions\ImageTest.cs" />
+    <None Include="Resources\loading.png" />
+    <None Include="Resources\error.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -68,20 +89,31 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="PropertyInspector\Global\sdpi.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PropertyInspector\SimpleImageSlideshow\index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-
   <!-- <Target Name="PreBuild" BeforeTargets="Build"> -->
-    <!-- <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" /> -->
+  <!-- <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" /> -->
   <!-- </Target> -->
-
   <!-- <Target Name="PostBuild" AfterTargets="Build"> -->
-    <!-- <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" /> -->
+  <!-- <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" /> -->
   <!-- </Target> -->
   <Target Name="VeryEarlyStop" BeforeTargets="BeforeBuild">
-	  <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" />
-	</Target>
-
-	<Target Name="RestartAfterBuild" AfterTargets="Build">
-	  <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" />
-	</Target>
+    <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" />
+  </Target>
+  <Target Name="RestartAfterBuild" AfterTargets="Build">
+    <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" />
+  </Target>
 </Project>

@@ -2,7 +2,7 @@
   "Actions": [
     {
       "Icon": "Images/icon",
-      "Name": "test",
+      "Name": "Clock",
       "States": [
         {
           "Image": "Images/action1",
@@ -11,8 +11,38 @@
         }
       ],
       "SupportedInMultiActions": false,
-      "Tooltip": "test",
-      "UUID": "com.salainne.salainnes-streamdeck-collection.counter"
+      "Tooltip": "Clock for testing connection between plugin and streamdeck",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.Clock"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "ImageTest",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Image for testing connection between plugin and streamdeck",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.ImageTest"
+    },
+
+    {
+      "Icon": "Images/icon",
+      "Name": "Simple image slideshow",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Simple Image slideshow. Made for Simple image Server (https://github.com/Salainne/Simple-Image-Server/releases/latest)",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.SimpleImageSlideshow",
+      "PropertyInspectorPath": "PropertyInspector/SimpleImageSlideshow/Index.html"
     }
   ],
 

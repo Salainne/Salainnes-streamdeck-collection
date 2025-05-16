@@ -1,11 +1,14 @@
-﻿using streamdeck_client_csharp;
+﻿using Newtonsoft.Json.Linq;
+using streamdeck_client_csharp;
 using streamdeck_client_csharp.Events;
 using Streamdeck_collection.Model;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +17,7 @@ namespace Streamdeck_collection
 {
     internal partial class Program
     {
-        private static Dictionary<string, WillAppearEvent> _ActiveIcons = new Dictionary<string, WillAppearEvent>();
+        private static Dictionary<string, ActiveIconContainer> _ActiveIcons = new Dictionary<string, ActiveIconContainer>();
 
         static void RunPlugin(StreamdeckOptions options)
         {
@@ -24,50 +27,6 @@ namespace Streamdeck_collection
             StreamDeckConnection connection = new StreamDeckConnection(options.Port, options.PluginUUID, options.RegisterEvent);
 
             RegisterStandardEventHandlers(connection, connectEvent, disconnectEvent);
-
-            
-
-            //-- initialize data
-            connection.OnWillAppear += (sender, args) =>
-            {
-                lock (_ActiveIcons)
-                {
-                    if (_ActiveIcons.ContainsKey(args.Event.Context) == false)
-                    {
-                        _ActiveIcons.Add(args.Event.Context, args.Event);
-                    }
-                    
-                }
-                //switch (args.Event.Action)
-                //{
-                //    case "com.salainne.invoke-queuelength.counter":
-                //        lock (_Counters)
-                //        {
-                //            _Counters[args.Event.Context] = _invokeConst + "n/a";
-                //        }
-                //        break;
-                //}
-            };
-
-            connection.OnWillDisappear += (sender, args) =>
-            {
-                lock (_ActiveIcons)
-                {
-                    if (_ActiveIcons.ContainsKey(args.Event.Context))
-                    {
-                        _ActiveIcons.Remove(args.Event.Context);
-                    }
-
-                }
-                //lock (_Counters)
-                //{
-                //    if (_Counters.ContainsKey(args.Event.Context))
-                //    {
-                //        _Counters.Remove(args.Event.Context);
-                //    }
-                //}
-            };
-            //--
 
             // Start the connection
             connection.Run();
@@ -83,7 +42,21 @@ namespace Streamdeck_collection
                     {
                         foreach (var icon in _ActiveIcons)
                         {
-                            _ = connection.SetTitleAsync(DateTime.Now.ToString("HH:mm:ss"), icon.Key, SDKTarget.HardwareAndSoftware, null);
+                            try
+                            {
+                                if (_actionHandlers.TryGetValue(icon.Value.WillAppearEvent.Action, out var method))
+                                {
+                                    method.Invoke(null, new object[] { connection, icon });
+                                }
+                                else
+                                {
+                                    _ = connection.SetTitleAsync("MISSING", icon.Key, SDKTarget.HardwareAndSoftware, null);
+                                }
+                            }
+                            catch(Exception ex){
+                                _ = connection.SetTitleAsync(ex.Message, icon.Key, SDKTarget.HardwareAndSoftware, null);
+                            }
+                            
                         }
                     }
 
@@ -145,6 +118,48 @@ namespace Streamdeck_collection
             {
                 System.Diagnostics.Debug.WriteLine($"App Terminate: {args.Event.Payload.Application}");
             };
+
+            //-- initialize data
+            connection.OnWillAppear += (sender, args) =>
+            {
+                lock (_ActiveIcons)
+                {
+                    if (_ActiveIcons.ContainsKey(args.Event.Context) == false)
+                    {
+                        _ActiveIcons.Add(args.Event.Context, new ActiveIconContainer { WillAppearEvent = args.Event, RawSettings = args.Event.Payload.Settings });
+                        Debug.WriteLine($"Icon loaded: {args.Event.Context}");
+                    }
+                }
+            };
+
+            connection.OnDidReceiveSettings += (sender, args) =>
+            {
+                lock (_ActiveIcons)
+                {
+                    if (_ActiveIcons.ContainsKey(args.Event.Context))
+                    {
+                        if(_ActiveIcons[args.Event.Context].RawSettings.ToString().GetHashCode() == args.Event.Payload.Settings.ToString().GetHashCode())
+                        {
+                            return;
+                        }
+                        _ActiveIcons[args.Event.Context].RawSettings = args.Event.Payload.Settings;
+                        Debug.WriteLine($"Updating settings: {args.Event.Context}");
+                    }
+                }
+            };
+
+            connection.OnWillDisappear += (sender, args) =>
+            {
+                lock (_ActiveIcons)
+                {
+                    if (_ActiveIcons.ContainsKey(args.Event.Context))
+                    {
+                        _ActiveIcons.Remove(args.Event.Context);
+                        Debug.WriteLine($"Icon unloaded: {args.Event.Context}");
+                    }
+                }
+            };
+            //--
         }
     }
 }

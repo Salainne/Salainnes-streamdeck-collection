@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <title></title>
+    <link rel="stylesheet" href="../Global/sdpi.css">
+</head>
+<body>
+    <div class="sdpi-item">
+        <div class="sdpi-item-label">Url</div>
+        <input class="sdpi-item-value" id="text_url" value="" placeholder="Url to image server. ex.: http://picsum.photos/72 or http://localhost:9191/myimages" oninput="updateSettings()" disabled>
+    </div>
+
+    <div class="sdpi-wrapper">
+        <div class="sdpi-item">
+            <div class="sdpi-item-label">Select update interval in seconds</div>
+            <select class="sdpi-item-value select" id="select_interval" oninput="updateSettings()" disabled>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="30">30</option>
+                <option value="60">60</option>
+                <option value="600">600</option>
+            </select>
+        </div>
+    </div>
+
+    <script src="../Global/sdpi.js"></script>
+    <script src="Index.js"></script>
+
+</body>
+</html>
