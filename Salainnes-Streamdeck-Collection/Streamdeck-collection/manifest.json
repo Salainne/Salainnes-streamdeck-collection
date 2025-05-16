@@ -1,0 +1,45 @@
+{
+  "Actions": [
+    {
+      "Icon": "Images/icon",
+      "Name": "test",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "test",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.counter"
+    }
+  ],
+
+
+
+  "Author": "Salainne",
+  "Description": "Collection of tools that I either could not find in the store, or I wanted in a better version.",
+  "Name": "Salainnes Streamdeck Collection",
+  "Icon": "Images/pluginIcon",
+  "URL": "https://github.com/Salainne/Salainnes-streamdeck-collection",
+  "Version": "1.0",
+  "CodePath": "Streamdeck-collection.exe",
+  "Category": "Salainnes Streamdeck Collection",
+  "CategoryIcon": "Images/categoryIcon",
+  "SDKVersion": 2,
+  "Software": {
+    "MinimumVersion": "4.1"
+  },
+  "OS": [
+    {
+      "Platform": "windows",
+      "MinimumVersion": "10"
+    }
+  ],
+  "ApplicationsToMonitor": {
+    "windows": [
+      "notepad.exe"
+    ]
+  }
+}
