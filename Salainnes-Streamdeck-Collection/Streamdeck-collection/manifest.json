@@ -43,6 +43,118 @@
       "Tooltip": "Simple Image slideshow. Made for Simple image Server (https://github.com/Salainne/Simple-Image-Server/releases/latest)",
       "UUID": "com.salainne.salainnes-streamdeck-collection.SimpleImageSlideshow",
       "PropertyInspectorPath": "PropertyInspector/SimpleImageSlideshow/Index.html"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "CPU Speed",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current calculated CPU speed",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.CpuSpeed"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Memory load",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current system ram usage",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.MemoryLoad"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "CPU load",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current CPU load",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.CPULoad"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "CPU load corrected for inactive cores",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current CPU load corrected for inactive cores. This is a calculation that is more precise, but still not 100% accurate",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.CPULoadCorrectedForInactiveCores"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "GPU Memory load",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current GPU memory usage",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.GpuMemoryLoad"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "GPU load",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current GPU load",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.GpuLoad"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "GPU Temperatur",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current GPU temperatur",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.GpuTemperatur"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "GPU HotspotTemperatur",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current GPU hotspot temperatur",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.GpuHotspotTemperatur"
     }
   ],
 

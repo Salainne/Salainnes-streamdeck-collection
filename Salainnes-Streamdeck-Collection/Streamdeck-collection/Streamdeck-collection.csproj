@@ -37,6 +37,10 @@
     <Reference Include="CommandLine, Version=2.9.1.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
       <HintPath>..\packages\CommandLineParser.2.9.1\lib\net461\CommandLine.dll</HintPath>
     </Reference>
+    <Reference Include="LibreHardwareMonitorLib, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dlls\LibreHardwareMonitorLib.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -57,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\SystemMonitor.cs" />
     <Compile Include="Model\ActiveIconContainer.cs" />
     <Compile Include="Model\Attributes\StreamdeckActionAttribute.cs" />
     <Compile Include="Model\SimpleImageSlideshowData.cs" />
@@ -64,6 +69,8 @@
     <Compile Include="Model\StreamdeckOptions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Dlls\LibreHardwareMonitorLib.dll" />
+    <Content Include="Dlls\LibreHardwareMonitorLib.pdb" />
     <Content Include="PropertyInspector\Global\sdpi.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -76,6 +83,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RunPlugin.cs" />
+    <Compile Include="StreamdeckActions\CPULoadCorrectedForInactiveCores.cs" />
+    <Compile Include="StreamdeckActions\CpuLoad.cs" />
+    <Compile Include="StreamdeckActions\GpuHotspotTemperatur.cs" />
+    <Compile Include="StreamdeckActions\GpuTemperatur.cs" />
+    <Compile Include="StreamdeckActions\GpuLoad.cs" />
+    <Compile Include="StreamdeckActions\GpuMemoryLoad.cs" />
+    <Compile Include="StreamdeckActions\MemoryLoad.cs" />
+    <Compile Include="StreamdeckActions\CpuSpeed.cs" />
     <Compile Include="StreamdeckActions\SimpleImageSlideshow.cs" />
     <Compile Include="StreamdeckActions\Clock.cs" />
     <Compile Include="StreamdeckActions\ImageTest.cs" />
@@ -103,6 +118,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- <Target Name="PreBuild" BeforeTargets="Build"> -->
   <!-- <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" /> -->
