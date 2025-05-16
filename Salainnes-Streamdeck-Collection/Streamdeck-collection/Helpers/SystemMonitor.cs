@@ -43,8 +43,6 @@ namespace Streamdeck_collection.Helpers
             _ = nominalFreqCounter.NextValue();
             _ = perfStateCounter.NextValue();
             _ = cpuTotal.NextValue();
-            //Thread.Sleep(500);
-            baseFrequencyMHz = nominalFreqCounter.NextValue();
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -123,6 +121,7 @@ namespace Streamdeck_collection.Helpers
 
         public static float GetCurrentCpuFrequency()
         {
+            baseFrequencyMHz = nominalFreqCounter.NextValue();
             float performancePercent = perfStateCounter.NextValue();
             return baseFrequencyMHz * (performancePercent / 100f);
         }
