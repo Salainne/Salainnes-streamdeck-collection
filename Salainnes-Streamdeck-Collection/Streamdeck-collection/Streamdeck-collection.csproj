@@ -70,11 +70,18 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
-  <Target Name="PreBuild" BeforeTargets="Build">
-    <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" />
-  </Target>
+  <!-- <Target Name="PreBuild" BeforeTargets="Build"> -->
+    <!-- <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" /> -->
+  <!-- </Target> -->
 
-  <Target Name="PostBuild" AfterTargets="Build">
-    <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" />
-  </Target>
+  <!-- <Target Name="PostBuild" AfterTargets="Build"> -->
+    <!-- <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" /> -->
+  <!-- </Target> -->
+  <Target Name="VeryEarlyStop" BeforeTargets="BeforeBuild">
+	  <Exec Command="streamdeck stop com.salainne.salainnes-streamdeck-collection" />
+	</Target>
+
+	<Target Name="RestartAfterBuild" AfterTargets="Build">
+	  <Exec Command="streamdeck restart com.salainne.salainnes-streamdeck-collection" />
+	</Target>
 </Project>
