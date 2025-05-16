@@ -155,6 +155,20 @@
       "SupportedInMultiActions": false,
       "Tooltip": "Show the current GPU hotspot temperatur",
       "UUID": "com.salainne.salainnes-streamdeck-collection.GpuHotspotTemperatur"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Powerplan",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "10"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current powerplan",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.Powerplan"
     }
   ],
 

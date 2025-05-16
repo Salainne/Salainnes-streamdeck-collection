@@ -189,7 +189,7 @@ namespace Streamdeck_collection.Helpers
             return GetGpuData(SensorType.Load, "GPU Memory", "Controller");
         }
 
-        public static float GetGpuData(SensorType sensorType, string name, string notInName = "")
+        private static float GetGpuData(SensorType sensorType, string name, string notInName = "")
         {
             foreach (var hardware in computer.Hardware)
             {
