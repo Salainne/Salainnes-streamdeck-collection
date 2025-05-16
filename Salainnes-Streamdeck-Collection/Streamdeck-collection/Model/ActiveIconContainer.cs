@@ -15,5 +15,7 @@ namespace Streamdeck_collection.Model
         public JObject RawSettings { get { return _settings; } set { _settings = value; HasNewSettings = true; } }
         private JObject _settings;
         public bool HasNewSettings { get; set; } = false;
+        public bool HasHadKeyDown { get; set; }
+        public bool HasHadKeyUp { get; set; }
     }
 }

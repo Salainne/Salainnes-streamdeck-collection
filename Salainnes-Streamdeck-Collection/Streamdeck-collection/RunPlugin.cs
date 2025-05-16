@@ -159,6 +159,29 @@ namespace Streamdeck_collection
                     }
                 }
             };
+
+            connection.OnKeyDown += (sender, args) =>
+            {
+                lock (_ActiveIcons)
+                {
+                    if (_ActiveIcons.ContainsKey(args.Event.Context))
+                    {
+                        _ActiveIcons[args.Event.Context].HasHadKeyDown = true;
+                        Debug.WriteLine($"Key Down: {args.Event.Context}");
+                    }
+                }
+            };
+            connection.OnKeyUp += (sender, args) =>
+            {
+                lock (_ActiveIcons)
+                {
+                    if (_ActiveIcons.ContainsKey(args.Event.Context))
+                    {
+                        _ActiveIcons[args.Event.Context].HasHadKeyUp = true;
+                        Debug.WriteLine($"Key Up: {args.Event.Context}");
+                    }
+                }
+            };
             //--
         }
     }

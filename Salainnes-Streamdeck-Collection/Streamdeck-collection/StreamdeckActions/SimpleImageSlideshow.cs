@@ -24,7 +24,7 @@ namespace Streamdeck_collection.StreamdeckActions
             }
             var data = icon.Value.Data as SimpleImageSlideshowData;
 
-            if (icon.Value.HasNewSettings)
+            if (icon.Value.HasNewSettings || icon.Value.HasHadKeyDown)
             {
                 data.Parse(icon.Value.RawSettings);
                 icon.Value.HasNewSettings = false;
@@ -43,6 +43,10 @@ namespace Streamdeck_collection.StreamdeckActions
 
             //var tmp = "hej";
             //_ = connection.SetTitleAsync(tmp, icon.Key, SDKTarget.HardwareAndSoftware, null);
+
+            // reset keydown/up
+            icon.Value.HasHadKeyDown = false;
+            icon.Value.HasHadKeyUp = false;
         }
 
         private static string GetRandomImageAsBase64(SimpleImageSlideshowData settings)
