@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Streamdeck_collection.Helpers
 {
@@ -19,12 +21,52 @@ namespace Streamdeck_collection.Helpers
             IsMemoryEnabled = true
         };
 
-        private static readonly List<PerformanceCounter> cpuCoreCounters = new List<PerformanceCounter>();
-        private static readonly PerformanceCounter cpuTotal = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-        private static readonly PerformanceCounter nominalFreqCounter = new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true);
-        private static readonly PerformanceCounter perfStateCounter = new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true);
+        private static readonly List<PerformanceCounterWithValue> cpuCoreCounters = new List<PerformanceCounterWithValue>();
+        private static readonly PerformanceCounterWithValue cpuTotal = new PerformanceCounterWithValue(new PerformanceCounter("Processor", "% Processor Time", "_Total"));
+        private static readonly PerformanceCounterWithValue baseFrequencyMHzCounter = new PerformanceCounterWithValue(new PerformanceCounter("Processor Information", "Processor Frequency", "_Total", true));
+        private static readonly PerformanceCounterWithValue perfStateCounter = new PerformanceCounterWithValue(new PerformanceCounter("Processor Information", "% Processor Performance", "_Total", true));
+        private static readonly List<GpuData> gpuDataToCollect = new List<GpuData>();
 
-        private static float baseFrequencyMHz;
+        public static uint MemoryLoad { get; private set; }
+
+        private class PerformanceCounterWithValue
+        {
+            private readonly PerformanceCounter _counter;
+            public float Value
+            {
+                get; private set;
+            }
+
+            public PerformanceCounterWithValue(PerformanceCounter counter)
+            {
+                _counter = counter;
+            }
+
+            public void Update()
+            {
+                Value = _counter.NextValue();
+            }
+        }
+        private class GpuData
+        {
+            public SensorType Sensor { get; private set; }
+            public string Name { get; private set; }
+            public string NotInName { get; private set; }
+            public float Value { get; private set; }
+
+            public GpuData(SensorType sensor, string name, string notInName = "")
+            {
+                Sensor = sensor;
+                Name = name;
+                NotInName = notInName;
+            }
+
+            public void SetValue(float value)
+            {
+                Value = value;
+            }
+        }
+
 
         static SystemMonitor()
         {
@@ -33,16 +75,57 @@ namespace Streamdeck_collection.Helpers
             int coreCount = Environment.ProcessorCount;
             for (int i = 0; i < coreCount; i++)
             {
-                cpuCoreCounters.Add(new PerformanceCounter("Processor", "% Processor Time", i.ToString(), true));
+                cpuCoreCounters.Add(new PerformanceCounterWithValue(new PerformanceCounter("Processor", "% Processor Time", i.ToString(), true)));
             }
+            gpuDataToCollect.Add(new GpuData(SensorType.Load, "Core"));
+            gpuDataToCollect.Add(new GpuData(SensorType.Temperature, "Hot Spot"));
+            gpuDataToCollect.Add(new GpuData(SensorType.Temperature, "Core"));
+            gpuDataToCollect.Add(new GpuData(SensorType.SmallData, "Memory Used"));
+            gpuDataToCollect.Add(new GpuData(SensorType.Load, "GPU Memory", "Controller"));
+            UpdateAllCounters();
+        }
+
+        public static void UpdateAllCounters()
+        {
+            UpdatePerformanceCounters();
+            UpdateMemoryCounters();
+            UpdateGpuCounters();
+        }
+        public static void UpdatePerformanceCounters()
+        {
             foreach (var counter in cpuCoreCounters)
             {
-                _ = counter.NextValue();
+                counter.Update();
             }
-
-            _ = nominalFreqCounter.NextValue();
-            _ = perfStateCounter.NextValue();
-            _ = cpuTotal.NextValue();
+            baseFrequencyMHzCounter.Update();
+            perfStateCounter.Update();
+            cpuTotal.Update();
+        }
+        public static void UpdateMemoryCounters()
+        {
+            MemoryLoad = GetMemoryLoad();
+        }
+        public static void UpdateGpuCounters()
+        {
+            foreach (var hardware in computer.Hardware)
+            {
+                if (hardware.HardwareType == HardwareType.GpuNvidia || hardware.HardwareType == HardwareType.GpuAmd)
+                {
+                    hardware.Update();
+                    foreach (var sensor in hardware.Sensors)
+                    {
+                        foreach (var gpuData in gpuDataToCollect)
+                        {
+                            if (sensor.SensorType == gpuData.Sensor && sensor.Name.Contains(gpuData.Name))
+                            {
+                                if (!string.IsNullOrEmpty(gpuData.NotInName) && sensor.Name.Contains(gpuData.NotInName))
+                                    continue;
+                                gpuData.SetValue(sensor.Value.GetValueOrDefault());
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
@@ -62,7 +145,7 @@ namespace Streamdeck_collection.Helpers
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool GlobalMemoryStatusEx([In, Out] MEMORYSTATUSEX lpBuffer);
 
-        public static uint GetMemoryLoad()
+        private static uint GetMemoryLoad()
         {
             MEMORYSTATUSEX memStatus = new MEMORYSTATUSEX();
             if (GlobalMemoryStatusEx(memStatus))
@@ -97,10 +180,9 @@ namespace Streamdeck_collection.Helpers
 
             foreach (var counter in cpuCoreCounters)
             {
-                float load = counter.NextValue();
-                if (load > 5.0f)
+                if (counter.Value > 5.0f)
                 {
-                    totalLoad += load;
+                    totalLoad += counter.Value;
                     activeCores++;
                 }
             }
@@ -111,19 +193,18 @@ namespace Streamdeck_collection.Helpers
 
         public static float GetCpuLoad()
         {
-            return cpuTotal.NextValue();
+            return cpuTotal.Value;
         }
 
         public static float GetNominalCpuFrequency()
         {
-            return baseFrequencyMHz;
+            return baseFrequencyMHzCounter.Value;
         }
 
         public static float GetCurrentCpuFrequency()
         {
-            baseFrequencyMHz = nominalFreqCounter.NextValue();
-            float performancePercent = perfStateCounter.NextValue();
-            return baseFrequencyMHz * (performancePercent / 100f);
+            float performancePercent = perfStateCounter.Value;
+            return baseFrequencyMHzCounter.Value * (performancePercent / 100f);
         }
 
         public static float GetCpuTemperature()
@@ -170,23 +251,28 @@ namespace Streamdeck_collection.Helpers
 
         public static float GetGpuLoad()
         {
-            return GetGpuData(SensorType.Load, "Core");
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Load && x.Name == "Core").Value;
+            //return GetGpuData(SensorType.Load, "Core");
         }
         public static float GetGpuHotSpotTemperature()
         {
-            return GetGpuData(SensorType.Temperature, "Hot Spot");
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Temperature && x.Name == "Hot Spot").Value;
+            //return GetGpuData(SensorType.Temperature, "Hot Spot");
         }
         public static float GetGpuTemperature()
         {
-            return GetGpuData(SensorType.Temperature, "Core");
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Temperature && x.Name == "Core").Value;
+            //return GetGpuData(SensorType.Temperature, "Core");
         }
         public static float GetVramUsage()
         {
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.SmallData && x.Name == "Memory Used").Value;
             return GetGpuData(SensorType.SmallData, "Memory Used");
         }
         public static float GetVramUsagePercent()
         {
-            return GetGpuData(SensorType.Load, "GPU Memory", "Controller");
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Load && x.Name == "GPU Memory").Value;
+            //return GetGpuData(SensorType.Load, "GPU Memory", "Controller");
         }
 
         private static float GetGpuData(SensorType sensorType, string name, string notInName = "")

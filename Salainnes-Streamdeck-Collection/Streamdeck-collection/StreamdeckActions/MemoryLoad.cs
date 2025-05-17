@@ -16,7 +16,7 @@ namespace Streamdeck_collection.StreamdeckActions
     {
         public static void Run(StreamDeckConnection connection, KeyValuePair<string, ActiveIconContainer> icon)
         {
-            var load = Helpers.SystemMonitor.GetMemoryLoad();
+            var load = Helpers.SystemMonitor.MemoryLoad;
 
             var tmp = $"RAM{Environment.NewLine}{load}%";
             _ = connection.SetTitleAsync(tmp, icon.Key, SDKTarget.HardwareAndSoftware, null);

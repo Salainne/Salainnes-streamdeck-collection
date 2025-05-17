@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using streamdeck_client_csharp;
 using streamdeck_client_csharp.Events;
+using Streamdeck_collection.Helpers;
 using Streamdeck_collection.Model;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,8 @@ namespace Streamdeck_collection
                 // We connected, loop every second until we disconnect
                 while (!disconnectEvent.WaitOne(TimeSpan.FromMilliseconds(1000)))
                 {
+                    SystemMonitor.UpdateAllCounters();
+
                     lock (_ActiveIcons)
                     {
                         foreach (var icon in _ActiveIcons)
