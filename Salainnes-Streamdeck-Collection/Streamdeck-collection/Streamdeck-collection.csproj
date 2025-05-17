@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helpers\SystemMonitor.cs" />
+    <Compile Include="Helpers\Utilities.cs" />
     <Compile Include="Model\ActiveIconContainer.cs" />
     <Compile Include="Model\Attributes\StreamdeckActionAttribute.cs" />
     <Compile Include="Model\SimpleImageSlideshowData.cs" />

@@ -23,9 +23,7 @@ namespace Streamdeck_collection
             //while (!System.Diagnostics.Debugger.IsAttached) { System.Threading.Thread.Sleep(100); }
 
             // Load all the actions in the assembly
-            var types = Assembly.GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t.IsClass && t.IsAbstract && t.IsSealed); // static classes
+            var types = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.IsClass);
 
             foreach (var type in types)
             {

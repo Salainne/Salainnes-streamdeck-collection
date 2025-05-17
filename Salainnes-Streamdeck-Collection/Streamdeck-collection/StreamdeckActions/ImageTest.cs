@@ -20,9 +20,11 @@ namespace Streamdeck_collection.StreamdeckActions
     {
         public static void Run(StreamDeckConnection connection, KeyValuePair<string, ActiveIconContainer> icon)
         {
-            if(icon.Value.Data == null)
+            if (icon.Value.Data == null)
             {
                 icon.Value.Data = new ImageTestData() { UpdateInterval = 10000 };
+                _ = connection.SetImageAsync("", icon.Key, SDKTarget.HardwareAndSoftware, null);
+                _ = connection.SetTitleAsync("", icon.Key, SDKTarget.HardwareAndSoftware, null);
             }
             var data = icon.Value.Data as ImageTestData;
             if (data.Image == null || data.LastUpdate.AddMilliseconds(data.UpdateInterval) < DateTime.Now)

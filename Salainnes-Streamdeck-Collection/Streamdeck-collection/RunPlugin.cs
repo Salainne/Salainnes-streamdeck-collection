@@ -3,10 +3,12 @@ using streamdeck_client_csharp;
 using streamdeck_client_csharp.Events;
 using Streamdeck_collection.Helpers;
 using Streamdeck_collection.Model;
+using Streamdeck_collection.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 using System.Runtime;
@@ -131,6 +133,7 @@ namespace Streamdeck_collection
                     {
                         _ActiveIcons.Add(args.Event.Context, new ActiveIconContainer { WillAppearEvent = args.Event, RawSettings = args.Event.Payload.Settings });
                         Debug.WriteLine($"Icon loaded: {args.Event.Context}");
+                        _ = connection.SetImageAsync(Helpers.Utilities.GetBase64Image(Resources.loading), args.Event.Context, SDKTarget.HardwareAndSoftware, null);
                     }
                 }
             };
@@ -153,14 +156,15 @@ namespace Streamdeck_collection
 
             connection.OnWillDisappear += (sender, args) =>
             {
-                lock (_ActiveIcons)
-                {
-                    if (_ActiveIcons.ContainsKey(args.Event.Context))
-                    {
-                        _ActiveIcons.Remove(args.Event.Context);
-                        Debug.WriteLine($"Icon unloaded: {args.Event.Context}");
-                    }
-                }
+                // Do not remove the icons here.. This will use more memory, but it will be faster to show them again on page change.
+                //lock (_ActiveIcons)
+                //{
+                //    if (_ActiveIcons.ContainsKey(args.Event.Context))
+                //    {
+                //        _ActiveIcons.Remove(args.Event.Context);
+                //        Debug.WriteLine($"Icon unloaded: {args.Event.Context}");
+                //    }
+                //}
             };
 
             connection.OnKeyDown += (sender, args) =>

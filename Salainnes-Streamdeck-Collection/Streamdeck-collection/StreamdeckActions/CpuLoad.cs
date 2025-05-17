@@ -16,6 +16,11 @@ namespace Streamdeck_collection.StreamdeckActions
     {
         public static void Run(StreamDeckConnection connection, KeyValuePair<string, ActiveIconContainer> icon)
         {
+            if (icon.Value.Data == null)
+            {
+                icon.Value.Data = new object();
+                _ = connection.SetImageAsync("", icon.Key, SDKTarget.HardwareAndSoftware, null);
+            }
             //var load = Helpers.SystemMonitor.GetCpuLoadCorrectedForActiveCores();
             var load = Helpers.SystemMonitor.GetCpuLoad();
 

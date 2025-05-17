@@ -16,6 +16,11 @@ namespace Streamdeck_collection.StreamdeckActions
     {
         public static void Run(StreamDeckConnection connection, KeyValuePair<string, ActiveIconContainer> icon)
         {
+            if (icon.Value.Data == null)
+            {
+                icon.Value.Data = new object();
+                _ = connection.SetImageAsync("", icon.Key, SDKTarget.HardwareAndSoftware, null);
+            }
             var tmp = DateTime.Now.ToString("HH:mm:ss");
             _ = connection.SetTitleAsync(tmp, icon.Key, SDKTarget.HardwareAndSoftware, null);
         }
