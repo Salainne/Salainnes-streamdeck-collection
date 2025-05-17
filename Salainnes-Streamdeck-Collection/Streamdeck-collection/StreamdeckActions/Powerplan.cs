@@ -22,6 +22,12 @@ namespace Streamdeck_collection.StreamdeckActions
 
             var tmp = $"Powerplan{Environment.NewLine}{name}";
             _ = connection.SetTitleAsync(tmp, icon.Key, SDKTarget.HardwareAndSoftware, null);
+
+            if (icon.Value.HasHadKeyDown)
+            {
+                Helpers.SystemMonitor.CycleActivePowerPlan();
+                icon.Value.HasHadKeyDown = false;
+            }
         }
     }
 }

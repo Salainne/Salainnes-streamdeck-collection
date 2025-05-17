@@ -325,6 +325,59 @@ namespace Streamdeck_collection.Helpers
 
             return plan;
         }
+
+        public static void CycleActivePowerPlan()
+        {
+            var output = "";
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = "powercfg";
+                process.StartInfo.Arguments = "/list";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+
+                output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+            }
+
+
+            var lines = output.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            lines = lines.Where(a => a.Contains("GUID")).ToArray();
+
+            var plans = new List<PowerPlan>();
+            foreach (var line in lines)
+            {
+                var tmp = line.Substring(line.IndexOf("GUID: ") + 6);
+                var guid = tmp.Substring(0, 36);
+                var name = tmp.Replace(guid, "").Trim();
+                var active = name.EndsWith("*");
+                plans.Add(new PowerPlan { Name = name, Guid = Guid.Parse(guid), Active = active });
+            }
+            plans = plans.Where(a => a.Name.Contains("saver") == false).ToList();
+
+            var nextPlanIndex = plans.IndexOf(plans.FirstOrDefault(a => a.Active)) + 1;
+            if (nextPlanIndex >= plans.Count)
+            {
+                nextPlanIndex = 0;
+            }
+
+            var nextPlan = plans[nextPlanIndex];
+
+            using (var process = new Process())
+            {
+                process.StartInfo.FileName = "powercfg";
+                process.StartInfo.Arguments = $"/s {nextPlan.Guid}";
+                process.StartInfo.RedirectStandardOutput = true;
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.Start();
+                process.WaitForExit();
+            }
+
+        }
     }
 
     //--
@@ -332,5 +385,6 @@ namespace Streamdeck_collection.Helpers
     {
         public string Name { get; set; }
         public Guid Guid { get; set; }
+        public bool Active { get; set; }
     }
 }
