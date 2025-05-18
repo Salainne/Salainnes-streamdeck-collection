@@ -86,6 +86,7 @@
     <Compile Include="RunPlugin.cs" />
     <Compile Include="StreamdeckActions\CPULoadCorrectedForInactiveCores.cs" />
     <Compile Include="StreamdeckActions\CpuLoad.cs" />
+    <Compile Include="StreamdeckActions\ImageTransparencyTest.cs" />
     <Compile Include="StreamdeckActions\Powerplan.cs" />
     <Compile Include="StreamdeckActions\GpuHotspotTemperatur.cs" />
     <Compile Include="StreamdeckActions\GpuTemperatur.cs" />

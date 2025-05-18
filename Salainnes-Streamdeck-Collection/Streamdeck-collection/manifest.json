@@ -28,6 +28,20 @@
       "Tooltip": "Image for testing connection between plugin and streamdeck",
       "UUID": "com.salainne.salainnes-streamdeck-collection.ImageTest"
     },
+    {
+      "Icon": "Images/icon",
+      "Name": "ImageTransparencyTest",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Image for testing transparency on streamdeck",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.ImageTransparencyTest"
+    },
 
     {
       "Icon": "Images/icon",
