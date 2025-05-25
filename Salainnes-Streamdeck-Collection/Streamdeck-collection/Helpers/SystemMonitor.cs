@@ -82,6 +82,7 @@ namespace Streamdeck_collection.Helpers
             gpuDataToCollect.Add(new GpuData(SensorType.Temperature, "Core"));
             gpuDataToCollect.Add(new GpuData(SensorType.SmallData, "Memory Used"));
             gpuDataToCollect.Add(new GpuData(SensorType.Load, "GPU Memory", "Controller"));
+            gpuDataToCollect.Add(new GpuData(SensorType.Clock, "GPU Core"));
             UpdateAllCounters();
         }
 
@@ -253,6 +254,10 @@ namespace Streamdeck_collection.Helpers
         {
             return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Load && x.Name == "Core").Value;
             //return GetGpuData(SensorType.Load, "Core");
+        }
+        public static float GetGpuCoreSpeed()
+        {
+            return gpuDataToCollect.FirstOrDefault(x => x.Sensor == SensorType.Clock && x.Name == "GPU Core").Value;
         }
         public static float GetGpuHotSpotTemperature()
         {

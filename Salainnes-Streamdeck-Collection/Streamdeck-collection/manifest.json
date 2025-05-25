@@ -144,6 +144,20 @@
     },
     {
       "Icon": "Images/icon",
+      "Name": "GPU core speed",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the current GPU core speed",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.GpuCoreSpeed"
+    },
+    {
+      "Icon": "Images/icon",
       "Name": "GPU Temperatur",
       "States": [
         {
