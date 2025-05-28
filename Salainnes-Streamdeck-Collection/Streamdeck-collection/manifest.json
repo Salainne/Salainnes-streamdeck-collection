@@ -197,6 +197,20 @@
       "SupportedInMultiActions": false,
       "Tooltip": "Show the current powerplan",
       "UUID": "com.salainne.salainnes-streamdeck-collection.Powerplan"
+    },
+    {
+      "Icon": "Images/icon",
+      "Name": "Invoke Queuelength",
+      "States": [
+        {
+          "Image": "Images/action1",
+          "TitleAlignment": "middle",
+          "FontSize": "12"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "Tooltip": "Show the InvokeAI Queuelength",
+      "UUID": "com.salainne.salainnes-streamdeck-collection.InvokeQueuelength"
     }
   ],
 

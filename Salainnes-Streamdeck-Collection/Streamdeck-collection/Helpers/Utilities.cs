@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +38,28 @@ namespace Streamdeck_collection.Helpers
             catch
             {
                 return Helpers.Utilities.GetBase64Image(Resources.error);
+            }
+        }
+
+        internal static string Post(string url, string json, out HttpStatusCode statuscode)
+        {
+            using (var client = new HttpClient())
+            {
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                try
+                {
+                    HttpResponseMessage response = client.PostAsync(url, content).Result;
+                    response.EnsureSuccessStatusCode();
+                    statuscode = response.StatusCode;
+                    string resultat = response.Content.ReadAsStringAsync().Result;
+                    return resultat;
+                }
+                catch (HttpRequestException ex)
+                {
+                    statuscode = HttpStatusCode.InternalServerError;
+                    return ex.Message;
+                }
             }
         }
     }
