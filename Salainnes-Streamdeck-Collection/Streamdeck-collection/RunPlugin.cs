@@ -41,7 +41,13 @@ namespace Streamdeck_collection
                 // We connected, loop every second until we disconnect
                 while (!disconnectEvent.WaitOne(TimeSpan.FromMilliseconds(1000)))
                 {
-                    SystemMonitor.UpdateAllCounters();
+                    try
+                    {
+                        SystemMonitor.UpdateAllCounters();
+                    }
+                    catch (Exception ex)
+                    {
+                    }
 
                     lock (_ActiveIcons)
                     {
